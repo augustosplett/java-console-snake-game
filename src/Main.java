@@ -5,10 +5,12 @@ public class Main {
     public static int score = 0;
     public static void main(String[] args) {
 
+
         var board = new Board((byte) 21,(byte) 9);
         Scanner scanner = new Scanner(System.in);
 
         while (keepLooping) {
+            System.out.println("SCORE: " + score );
             board.displayBoard();
             System.out.println("W: Move UP, S: Move Down, A: Move Left, D:Move Right");
             System.out.print("Enter your choice: ");

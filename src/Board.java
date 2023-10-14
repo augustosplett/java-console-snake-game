@@ -85,15 +85,15 @@ public class Board {
 
 //    Methods to move the snake
     public void moveSnakeUp(){
-        //add validation to check if the snake is not trying to backwards
-        //it can be done validating it the head == (head - 1)
+
         var snakeHead = snake.get(snake.size()-1);
         var newHead = board[snakeHead.getPositionX()-1][snakeHead.getPositionY()];
 
-        if(isWall(newHead)){//break the game if the user hits the wall
+        if(isWall(newHead) || isBody(newHead)){//break the game if the user hits the wall
             Main.keepLooping = false;
             return;
         }
+
         //add the new block to the snake's body
         snake.add(newHead);
         var snakeTail = snake.get(0);
@@ -109,12 +109,11 @@ public class Board {
         newHead.setState(Body.instance());
     }
     public void moveSnakeDown(){
-        //add validation to check if the snake is not trying to backwards
-        //it can be done validating it the head == (head - 1)
+
         var snakeHead = snake.get(snake.size()-1);
         var newHead = board[snakeHead.getPositionX()+1][snakeHead.getPositionY()];
 
-        if(isWall(newHead)){
+        if(isWall(newHead) || isBody(newHead)){
             Main.keepLooping = false;
             return;
         }
@@ -132,13 +131,12 @@ public class Board {
         newHead.setState(Body.instance());
     }
     public void moveSnakeLeft(){
-        //add validation to check if the snake is not trying to backwards
-        //it can be done validating it the head == (head - 1)
+
         var snakeHead = snake.get(snake.size()-1);
 
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()-1];
 
-        if(isWall(newHead)){
+        if(isWall(newHead) || isBody(newHead)){
             Main.keepLooping = false;
             return;
         }
@@ -156,12 +154,11 @@ public class Board {
         newHead.setState(Body.instance());
     }
     public void moveSnakeRight(){
-        //add validation to check if the snake is not trying to backwards
-        //it can be done validating it the head == (head - 1)
+
         var snakeHead = snake.get(snake.size()-1);
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()+1];
 
-        if(isWall(newHead)){
+        if(isWall(newHead) || isBody(newHead)){
             Main.keepLooping = false;
             return;
         }
@@ -188,6 +185,9 @@ public class Board {
     }
     private boolean isBlank(Block block){
         return block.getState() == Blank.instance();
+    }
+    private boolean isBody(Block block){
+        return block.getState() == Body.instance();
     }
 }
 
