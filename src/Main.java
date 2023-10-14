@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static boolean keepLooping = true;
+    public static int score = 0;
     public static void main(String[] args) {
 
         var board = new Board((byte) 21,(byte) 9);
