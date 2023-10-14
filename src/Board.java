@@ -5,13 +5,14 @@ import Block.State.Body;
 import Block.State.Wall;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board {
 
     private final byte boardWidth;//define the board Width dynamically
     private final byte boardHeight;//define the board Height dynamically
     private final Block[][] board;
-    private List<Block> snake = new ArrayList<>();
+    private final List<Block> snake = new ArrayList<>();
 
     public Board(byte boardWidth, byte boardHeight) {
         this.boardWidth = boardWidth;
@@ -24,6 +25,7 @@ public class Board {
     private void initializeBoard(){
         createTiles();
         placeSnake();
+        placeApple();
     }
     private void createTiles(){
         Block tile;
@@ -60,7 +62,16 @@ public class Board {
 
 
     }
-
+    private void placeApple(){//plane an apple into a random place on the board
+        Random random = new Random();
+        int randX;
+        int randY;
+        do{
+            randX = random.nextInt(boardHeight-1);
+            randY = random.nextInt(boardWidth-1);
+        }while (!(isBlank(board[randX][randY])));
+        board[randX][randY].setState(Apple.instance());
+    }
 //    Methods to display/update the game
     public void displayBoard() {
         //print the board into console
@@ -77,7 +88,6 @@ public class Board {
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
-        var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()-1][snakeHead.getPositionY()];
 
         if(isWall(newHead)){//break the game if the user hits the wall
@@ -86,41 +96,46 @@ public class Board {
         }
         //add the new block to the snake's body
         snake.add(newHead);
-        newHead.setState(Body.instance());
+        var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
             Main.score += 10;
+            placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
             snake.remove(snakeTail);
         }
+
+        newHead.setState(Body.instance());
     }
     public void moveSnakeDown(){
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
-        var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()+1][snakeHead.getPositionY()];
 
         if(isWall(newHead)){
             Main.keepLooping = false;
             return;
         }
+
         snake.add(newHead);
-        newHead.setState(Body.instance());
+        var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
             Main.score += 10;
+            placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
             snake.remove(snakeTail);
         }
+        newHead.setState(Body.instance());
     }
     public void moveSnakeLeft(){
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
-        var snakeTail = snake.get(0);
+
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()-1];
 
         if(isWall(newHead)){
@@ -129,20 +144,21 @@ public class Board {
         }
 
         snake.add(newHead);
-        newHead.setState(Body.instance());
 
+        var snakeTail = snake.get(0);
         if(isApple(newHead)){//increase the game score if the user cats an apple
             Main.score += 10;
+            placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
             snake.remove(snakeTail);
         }
+        newHead.setState(Body.instance());
     }
     public void moveSnakeRight(){
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
-        var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()+1];
 
         if(isWall(newHead)){
@@ -151,14 +167,16 @@ public class Board {
         }
 
         snake.add(newHead);
-        newHead.setState(Body.instance());
+        var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
             Main.score += 10;
+            placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
             snake.remove(snakeTail);
         }
+        newHead.setState(Body.instance());
     }
 
 //    Methods to validate the movements
@@ -167,6 +185,9 @@ public class Board {
     }
     private boolean isApple(Block block){
         return block.getState() == Apple.instance();
+    }
+    private boolean isBlank(Block block){
+        return block.getState() == Blank.instance();
     }
 }
 
