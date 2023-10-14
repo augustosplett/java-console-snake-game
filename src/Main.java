@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 //import Block.Block;
 //import Block.State.Apple;
 //import Block.State.Blank;
@@ -5,16 +8,24 @@
 //import Block.State.Wall;
 public class Main {
     public static void main(String[] args) {
-//        System.out.println("Hello world!");
-//        var block1 = new Block(Apple.instance());
-//        var block2 = new Block(Blank.instance());
-//        var block3 = new Block(Body.instance());
-//        var block4 = new Block(Wall.instance());
-//        System.out.println(block1.getState().display());
-//        System.out.println(block2.getState().display());
-//        System.out.println(block3.getState().display());
-//        System.out.println(block4.getState().display());
-        var board = new Board((byte) 20,(byte)10);
-        board.displayBoard();
+
+        var board = new Board((byte) 21,(byte) 9);
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            board.displayBoard();
+            System.out.println("W: Move UP, S: Move Down, A: Move Left, D:Move Right");
+            System.out.print("Enter your choice: ");
+            var choice = scanner.next();
+            handleChoice(choice.toUpperCase(), board);
+        }
+    }
+    public static void handleChoice( String choice, Board board){
+        switch (choice){
+            case "W": board.moveSnakeUp(); break;
+            case "S": board.moveSnakeDown(); break;
+            case "A": board.moveSnakeLeft(); break;
+            case "D": board.moveSnakeRight(); break;
+        }
     }
 }

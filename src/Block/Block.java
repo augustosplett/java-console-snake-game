@@ -8,7 +8,7 @@ public class Block {
     private final byte positionX;
     private final byte positionY;
 
-    public Block(IState state,byte positionX, byte positionY) {
+     public Block(IState state, byte positionY, byte positionX) {
         this.State = state;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -20,5 +20,13 @@ public class Block {
 
     public void setState(IState state) {
         this.State = state;
+    }
+
+    public byte getPositionX() {
+        return positionX;
+    }
+
+    public byte getPositionY() {
+        return positionY;
     }
 }
