@@ -2,9 +2,7 @@ import Block.Block;
 import Block.State.Blank;
 import Block.State.Body;
 import Block.State.Wall;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -54,11 +52,11 @@ public class Board {
 
         //change the state to be a body part
         board[posY][posX].setState(Body.instance());
-        board[posY + 1][posX].setState(Body.instance());
-        board[posY + 2][posX].setState(Body.instance());
+//        board[posY + 1][posX].setState(Body.instance());
+//        board[posY + 2][posX].setState(Body.instance());
         //include into snake array to control move
-        snake.add(board[posY + 2][posX]);
-        snake.add(board[posY + 1][posX]);
+//        snake.add(board[posY + 2][posX]);
+//        snake.add(board[posY + 1][posX]);
         snake.add(board[posY][posX]);
 
 
@@ -72,17 +70,17 @@ public class Board {
             System.out.println();
         }
     }
-    public void popLastSnakeBodyPiece(){
-        //var lastIndex = snake.size() - 1;
-        snake.get(0).setState(Blank.instance());
-        snake.remove(0);
-    }
     public void moveSnakeUp(){
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
         var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()-1][snakeHead.getPositionY()];
+
+        if(isWall(newHead)){
+            Main.keepLooping = false;
+            return;
+        }
 
         snake.add(newHead);
         newHead.setState(Body.instance());
@@ -98,18 +96,28 @@ public class Board {
         var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()+1][snakeHead.getPositionY()];
 
+        if(isWall(newHead)){
+            Main.keepLooping = false;
+            return;
+        }
         snake.add(newHead);
         newHead.setState(Body.instance());
 
         snakeTail.setState(Blank.instance());
         snake.remove(snakeTail);
     }
+
     public void moveSnakeLeft(){
         //add validation to check if the snake is not trying to backwards
         //it can be done validating it the head == (head - 1)
         var snakeHead = snake.get(snake.size()-1);
         var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()-1];
+
+        if(isWall(newHead)){
+            Main.keepLooping = false;
+            return;
+        }
 
         snake.add(newHead);
         newHead.setState(Body.instance());
@@ -124,11 +132,20 @@ public class Board {
         var snakeTail = snake.get(0);
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()+1];
 
+        if(isWall(newHead)){
+            Main.keepLooping = false;
+            return;
+        }
+
         snake.add(newHead);
         newHead.setState(Body.instance());
 
         snakeTail.setState(Blank.instance());
         snake.remove(snakeTail);
+    }
+
+    private boolean isWall(Block block){
+        return block.getState() == Wall.instance();
     }
 }
 
