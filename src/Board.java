@@ -130,6 +130,27 @@ public class Board {
         }
         newHead.setState(Body.instance());
     }
+    public int getSnakeLength() {
+        return snake.size(); // Add a method to get the snake's size
+    }
+    public void handleChoice(String choice) {
+        switch (choice) {
+            case "W":
+                moveSnakeUp();
+                break;
+            case "S":
+                moveSnakeDown();
+                break;
+            case "A":
+                moveSnakeLeft();
+                break;
+            case "D":
+                moveSnakeRight();
+                break;
+            default:
+                System.out.println("--Invalid Entry!--");
+        }
+    }
     public void moveSnakeLeft(){
 
         var snakeHead = snake.get(snake.size()-1);
@@ -174,6 +195,12 @@ public class Board {
             snake.remove(snakeTail);
         }
         newHead.setState(Body.instance());
+    }
+    public void resetBoard() {
+        // restart the game
+        snake.clear();
+        initializeBoard();
+        Main.keepLooping = true;
     }
 
 //    Methods to validate the movements
