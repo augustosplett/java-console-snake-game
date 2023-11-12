@@ -78,14 +78,14 @@ public class Board {
     }
 
 //    Methods to move the snake
+
     public void moveSnakeUp(){
 
         var snakeHead = snake.get(snake.size()-1);
         var newHead = board[snakeHead.getPositionX()-1][snakeHead.getPositionY()];
 
         if(isWall(newHead) || isBody(newHead)){//break the game if the user hits the wall
-            Globals.KEEP_LOOPING = false;
-            Globals.KEEP_MOVING_THREAD.stopThread();
+            stopMovingThread();
             return;
         }
 
@@ -94,7 +94,7 @@ public class Board {
         var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
-            Globals.SCORE += 10;
+            incrementScore();
             placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
@@ -109,8 +109,7 @@ public class Board {
         var newHead = board[snakeHead.getPositionX()+1][snakeHead.getPositionY()];
 
         if(isWall(newHead) || isBody(newHead)){
-            Globals.KEEP_LOOPING = false;
-            Globals.KEEP_MOVING_THREAD.stopThread();
+            stopMovingThread();
             return;
         }
 
@@ -118,7 +117,7 @@ public class Board {
         var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
-            Globals.SCORE += 10;
+            incrementScore();
             placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
@@ -133,8 +132,7 @@ public class Board {
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()-1];
 
         if(isWall(newHead) || isBody(newHead)){
-            Globals.KEEP_LOOPING = false;
-            Globals.KEEP_MOVING_THREAD.stopThread();
+            stopMovingThread();
             return;
         }
 
@@ -142,7 +140,7 @@ public class Board {
 
         var snakeTail = snake.get(0);
         if(isApple(newHead)){//increase the game score if the user cats an apple
-            Globals.SCORE += 10;
+            incrementScore();
             placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
@@ -156,8 +154,7 @@ public class Board {
         var newHead = board[snakeHead.getPositionX()][snakeHead.getPositionY()+1];
 
         if(isWall(newHead) || isBody(newHead)){
-            Globals.KEEP_LOOPING = false;
-            Globals.KEEP_MOVING_THREAD.stopThread();
+            stopMovingThread();
             return;
         }
 
@@ -165,7 +162,7 @@ public class Board {
         var snakeTail = snake.get(0);
 
         if(isApple(newHead)){//increase the game score if the user cats an apple
-            Globals.SCORE += 10;
+            incrementScore();
             placeApple();
         }else{//if it's not an apple, deletes the tail to give the movement impression
             snakeTail.setState(Blank.instance());
@@ -213,6 +210,15 @@ public class Board {
     }
     private boolean isBody(Block block){
         return block.getState() == Body.instance();
+    }
+
+    public void stopMovingThread(){
+        Globals.KEEP_LOOPING = false;
+        Globals.KEEP_MOVING_THREAD.stopThread();
+    }
+
+    public void incrementScore(){
+        Globals.SCORE += 10;
     }
 }
 
