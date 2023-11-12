@@ -213,13 +213,16 @@ public class Board {
     }
 
     public void stopMovingThread(){
-        Globals.KEEP_LOOPING = false;
         Globals.KEEP_MOVING_THREAD.stopThread();
+        Globals.KEEP_LOOPING = false;
+
     }
 
     public void incrementScore(){
         Globals.SCORE += 10;
     }
+
+
 }
 
 
